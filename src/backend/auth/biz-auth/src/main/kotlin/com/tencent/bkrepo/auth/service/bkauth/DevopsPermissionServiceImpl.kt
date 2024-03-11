@@ -139,9 +139,10 @@ class DevopsPermissionServiceImpl constructor(
                 || isDevopsProjectAdmin(uid, projectId!!)
             ) return true
 
-
+            logger.info("check test permission [$request]")
             // project权限
             if (resourceType == PROJECT.name) {
+                logger.info("check project permission [$request]")
                 return isDevopsProjectMember(uid, projectId!!, action)
                         || super.checkBkIamV3ProjectPermission(projectId!!, uid, action)
             }
@@ -149,15 +150,19 @@ class DevopsPermissionServiceImpl constructor(
             // repo或者node权限
             val pass = when (repoName) {
                 CUSTOM, LOG -> {
+                    logger.info("check repo custom permission [$request]")
                     isDevopsProjectMember(uid, projectId!!, action)
                 }
                 PIPELINE -> {
+                    logger.info("check repo pipeline permission [$request]")
                     checkDevopsPipelineOrProjectPermission(request)
                 }
                 REPORT -> {
+                    logger.info("check repo report permission [$request]")
                     checkDevopsReportPermission(action)
                 }
                 else -> {
+                    logger.info("check repo not in devops [$request]")
                     checkRepoNotInDevops(request)
                 }
             }
