@@ -28,6 +28,7 @@
 package com.tencent.bkrepo.repository.service.node.impl
 
 import com.tencent.bkrepo.auth.api.ServicePermissionClient
+import com.tencent.bkrepo.auth.pojo.enums.PathListType
 import com.tencent.bkrepo.auth.pojo.enums.PermissionAction
 import com.tencent.bkrepo.common.api.exception.BadRequestException
 import com.tencent.bkrepo.common.api.constant.PROXY_HEADER_NAME
@@ -44,7 +45,6 @@ import com.tencent.bkrepo.common.artifact.pojo.RepositoryType
 import com.tencent.bkrepo.common.artifact.router.RouterControllerProperties
 import com.tencent.bkrepo.common.mongo.dao.AbstractMongoDao.Companion.ID
 import com.tencent.bkrepo.common.mongo.dao.util.Pages
-import com.tencent.bkrepo.common.query.enums.OperationType
 import com.tencent.bkrepo.common.query.model.Sort
 import com.tencent.bkrepo.common.service.util.HeaderUtils
 import com.tencent.bkrepo.common.security.manager.PermissionManager
@@ -502,7 +502,7 @@ abstract class NodeBaseService(
         val result = servicePermissionClient.listPermissionPath(userId, projectId, repoName).data!!
         if (result.status) {
             val paths = result.path.flatMap {
-                require(it.key == OperationType.NIN)
+                require(it.key == PathListType.NIN)
                 it.value
             }.ifEmpty { null }
             logger.info(

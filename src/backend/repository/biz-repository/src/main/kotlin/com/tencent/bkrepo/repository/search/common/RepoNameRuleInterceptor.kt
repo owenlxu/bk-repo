@@ -32,6 +32,7 @@
 package com.tencent.bkrepo.repository.search.common
 
 import com.tencent.bkrepo.auth.api.ServicePermissionClient
+import com.tencent.bkrepo.auth.pojo.enums.PathListType
 import com.tencent.bkrepo.auth.pojo.enums.PermissionAction
 import com.tencent.bkrepo.common.api.constant.ensureSuffix
 import com.tencent.bkrepo.common.artifact.exception.RepoNotFoundException
@@ -168,7 +169,7 @@ class RepoNameRuleInterceptor(
         val result = servicePermissionClient.listPermissionPath(userId, projectId, repoName).data!!
         if (result.status) {
             val paths = result.path.flatMap {
-                require(it.key == OperationType.NIN)
+                require(it.key == PathListType.NIN)
                 it.value
             }
             logger.info("user[$userId] does not have permission to $paths of [$projectId/$repoName], will be filtered")

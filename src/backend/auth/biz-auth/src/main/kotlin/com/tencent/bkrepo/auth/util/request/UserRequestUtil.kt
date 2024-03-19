@@ -57,7 +57,7 @@ object UserRequestUtil {
         return tokens.map { TokenResult(it.name, it.createdAt, it.expiredAt) }
     }
 
-    fun convTokenInfo(tokens: List<Token>): List<Token> {
+    private fun convTokenInfo(tokens: List<Token>): List<Token> {
         return tokens.map { Token(it.name, StringPool.EMPTY, it.createdAt, it.expiredAt) }
     }
 

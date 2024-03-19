@@ -330,6 +330,7 @@ class PermissionHelper constructor(
     fun updatePermissionById(id: String, key: String, value: Any): Boolean {
         return permissionDao.updateById(id, key, value)
     }
+
     fun checkNodeAction(request: CheckPermissionRequest, userRoles: List<String>?, isProjectUser: Boolean): Boolean {
         with(request) {
             var roles = userRoles
@@ -367,11 +368,8 @@ class PermissionHelper constructor(
         return true
     }
 
-    fun isUserLocalAdmin(userId: String): Boolean {
-        val user = userDao.findFirstByUserId(userId) ?: run {
-            return false
-        }
-        return user.admin
+    fun isUserLocalAdmin(): Boolean {
+        return SecurityUtils.isAdmin()
     }
 
     fun isUserLocalProjectUser(userId: String, projectId: String): Boolean {

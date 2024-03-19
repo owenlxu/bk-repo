@@ -29,14 +29,20 @@
  * SOFTWARE.
  */
 
-package com.tencent.bkrepo.auth.pojo.permission
+package com.tencent.bkrepo.auth.pojo.enums
 
-import com.tencent.bkrepo.auth.pojo.enums.PathListType
-import io.swagger.annotations.ApiModel
+enum class PathListType {
+    NIN,
+    OIN;
 
-@ApiModel("校验权限请求")
-data class ListPathResult(
-    // when true, need to compare
-    val status: Boolean,
-    val path: Map<PathListType, List<String>>,
-)
+    fun id() = this.name.toLowerCase()
+
+    companion object {
+        private val DEFAULT = NIN
+
+        fun lookup(value: String): PathListType {
+            val upperCase = value.toUpperCase()
+            return values().find { it.name == upperCase } ?: DEFAULT
+        }
+    }
+}
